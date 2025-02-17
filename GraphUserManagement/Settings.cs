@@ -1,3 +1,12 @@
+// ========================================================================
+// File: Settings.cs
+// Purpose: This file contains the Settings class used to load configuration 
+//          values from the settings json for accessing Microsoft Graph.
+// Author: Desmond Stular
+// Created: 2025-02-16
+// ========================================================================
+
+
 using Microsoft.Extensions.Configuration;
 
 namespace GraphUserManagement;
