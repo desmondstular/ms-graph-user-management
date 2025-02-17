@@ -13,14 +13,61 @@ namespace GraphUserManagement;
 
 internal class Program
 {
-    private static void Main(string[] args)
+    private static async Task Main(string[] args)
     {
         Console.WriteLine("AzureAD User Management Console App");
         
-        // Load settings and initialize app graph with settings
+        // Load settings, initialize app graph, and then get token.
         var settings = Settings.LoadSettings();
         AppGraph.InitializeAppGraph(settings);
 
-        Console.WriteLine("Goodbye for now!");
+        var choice = -1;
+
+        while (choice != 0)
+        {
+            Console.WriteLine("Please select one of the following options:");
+            Console.WriteLine("0: Exit");
+            Console.WriteLine("1: Display App Token");
+            Console.Write("\nChoice: ");
+
+            try
+            {
+                choice = int.Parse(Console.ReadLine() ?? string.Empty);
+            }
+            catch (System.FormatException)
+            {
+                // Set to a not valid value
+                choice = -1;
+            }
+
+            switch (choice)
+            {
+                case 0:
+                    Console.WriteLine("Goodbye for now!");
+                    System.Environment.Exit(0);
+                    break;
+                    
+                case 1:
+                    await DisplayAppTokenAsync();
+                    break;
+                
+                default:
+                    Console.WriteLine("Invalid choice. Please select again.");
+                    break;
+            }
+        }
+    }
+
+    private static async Task DisplayAppTokenAsync()
+    {
+        try
+        {
+            var appToken = await AppGraph.GetAppTokenAsync();
+            Console.WriteLine($"App Token: {appToken}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
 }
