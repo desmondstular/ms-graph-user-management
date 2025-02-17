@@ -6,10 +6,21 @@
 // Created: 2025-02-16
 // ========================================================================
 
-using GraphUserManagement;
+using GraphUserManagement.Configuration;
+using GraphUserManagement.Helpers;
 
-Console.WriteLine("AzureAD User Management Console App");
+namespace GraphUserManagement;
 
-var settings = Settings.LoadSettings();
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        Console.WriteLine("AzureAD User Management Console App");
+        
+        // Load settings and initialize app graph with settings
+        var settings = Settings.LoadSettings();
+        AppGraph.InitializeAppGraph(settings);
 
-Console.WriteLine("Goodbye for now!");
+        Console.WriteLine("Goodbye for now!");
+    }
+}

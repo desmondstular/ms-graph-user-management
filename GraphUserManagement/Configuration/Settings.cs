@@ -9,17 +9,26 @@
 
 using Microsoft.Extensions.Configuration;
 
-namespace GraphUserManagement;
+namespace GraphUserManagement.Configuration;
 
+/// <summary>
+/// A configuration class that contains the client ID, tenant ID, and the client secret that is used to authenticate
+/// into the Microsoft Graph API.
+/// </summary>
 public class Settings
 {
     public string? ClientId { get; set; }
     public string? ClientSecret { get; set; }
     public string? TenantId { get; set; }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns>A <see cref="Settings"/> object populated with the values from the configuration file.</returns>
+    /// <exception cref="Exception">Throws exception if the settings could not be loaded.</exception>
     public static Settings LoadSettings()
     {
-        // Load settings
+        // Load settings json into configuration builder.
         IConfiguration config = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json", optional: false)
             .AddUserSecrets<Program>()
