@@ -8,6 +8,7 @@
 
 using GraphUserManagement.Configuration;
 using GraphUserManagement.Helpers;
+using Microsoft.Graph.Models;
 
 namespace GraphUserManagement;
 
@@ -28,6 +29,7 @@ internal class Program
             Console.WriteLine("Please select one of the following options:");
             Console.WriteLine("0: Exit");
             Console.WriteLine("1: Display App Token");
+            Console.WriteLine("2: Display Users");
             Console.Write("\nChoice: ");
 
             try
@@ -51,6 +53,10 @@ internal class Program
                     await DisplayAppTokenAsync();
                     break;
                 
+                case 2:
+                    await ListUsersAsync();
+                    break;
+                
                 default:
                     Console.WriteLine("Invalid choice. Please select again.");
                     break;
@@ -63,11 +69,46 @@ internal class Program
         try
         {
             var appToken = await AppGraph.GetAppTokenAsync();
-            Console.WriteLine($"App Token: {appToken}");
+            Console.WriteLine($"App Token: {appToken[..25]}...");
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
+        }
+    }
+
+    private static async Task ListUsersAsync()
+    {
+        try
+        {
+            var allUsers = true;
+            
+            // Get users from graph
+            List<User>? users = await AppGraph.GetUsersAsync(allUsers:allUsers);
+
+            if (users.Count == 0)
+            {
+                Console.WriteLine("There are no users.");
+                return;
+            }
+            
+            // If requested to retrieve all users, only display user count
+            if (allUsers)
+            {
+                Console.WriteLine($"There are {users.Count} users.");
+            }
+            else // display all users usernames and user principal names
+            {
+                foreach (var user in users)
+                {
+                    Console.WriteLine($"\tUsername: {user.DisplayName}; UserPrincipalName: {user.UserPrincipalName}");
+                }
+            }
+            
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error getting users: {ex.Message}");
         }
     }
 }
