@@ -6,17 +6,28 @@
 // ========================================================================
 
 using Azure.Identity;
+using GraphUserManagement.Configuration;
 using Microsoft.Graph;
 
 namespace GraphUserManagement.Helpers;
 
-public class AppGraph
+/// <summary>
+/// Helper class used for authenticating into Microsoft Graph and making a variety of API calls.
+/// </summary>
+public static class AppGraph
 {
     private static Settings? _settings;
     private static ClientSecretCredential? _clientSecretCredential;
     private static GraphServiceClient? _appClient;
 
-    public AppGraph(Settings settings)
+    /// <summary>
+    /// Initializes the Microsoft Graph service client for app-only authentication using provided settings.
+    /// </summary>
+    /// <param name="settings">Settings object containing the tenantId, clientId, and client secret used for
+    /// authentication.</param>
+    /// <exception cref="NullReferenceException">Thrown when the settings could not be loaded from the configuration
+    /// file or user secrets.</exception>
+    public static void InitializeAppGraph(Settings settings)
     {
         // Ensure settings are not null
         _settings = settings ??
@@ -28,6 +39,6 @@ public class AppGraph
         
         // Create graph client; uses default scope
         _appClient = new GraphServiceClient(_clientSecretCredential,
-                new[] {"https://graph.microsoft.com/.default"});
+            ["https://graph.microsoft.com/.default"]);
     }
 }
