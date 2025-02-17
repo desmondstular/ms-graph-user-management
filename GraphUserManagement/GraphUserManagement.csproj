@@ -5,10 +5,21 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-    </PropertyGroup>
+      <UserSecretsId>56b20830-e15d-436f-984f-ed16e1f11762</UserSecretsId>
+  </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Azure.Identity" Version="1.13.2" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.2" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.2" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.2" />
       <PackageReference Include="Microsoft.Graph" Version="5.70.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="appsettings*.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
 </Project>
