@@ -5,6 +5,7 @@
 // Created: 02-16-2025
 // ========================================================================
 
+using Azure.Core;
 using Azure.Identity;
 using GraphUserManagement.Configuration;
 using Microsoft.Graph;
@@ -40,5 +41,24 @@ public static class AppGraph
         // Create graph client; uses default scope
         _appClient = new GraphServiceClient(_clientSecretCredential,
             ["https://graph.microsoft.com/.default"]);
+    }
+    
+    
+    /// <summary>
+    /// Retrieves an application authentication token from Microsoft using given scopes.
+    /// </summary>
+    /// <returns>A string containing the application token.</returns>
+    /// <exception cref="NullReferenceException">Throws an error if Graph has not been setup for application only
+    /// authentication.</exception>
+    public static async Task<string> GetAppTokenAsync()
+    {
+        // Ensure credential is not null
+        _ = _clientSecretCredential ??
+            throw new System.NullReferenceException("Graph has not been initialized for app-only authentication.");
+        
+        // Request token with given scopes
+        var context = new TokenRequestContext(["https://graph.microsoft.com/.default"]);
+        var response = await _clientSecretCredential.GetTokenAsync(context);
+        return response.Token;
     }
 }
