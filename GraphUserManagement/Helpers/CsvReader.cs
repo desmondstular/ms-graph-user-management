@@ -11,7 +11,7 @@ public static class CsvReader
 {
     public static List<string[]> ReadCsv(string csvPath)
     {
-        List<string[]> dataMatrix = [];
+        List<string[]> sheetMatrix = [];
         
         using (var reader = new StreamReader(csvPath))
         {
@@ -23,11 +23,16 @@ public static class CsvReader
                 // If row has data, add to data return var
                 if (cells?.Length > 0)
                 {
-                    dataMatrix.Add(cells);
+                    sheetMatrix.Add(cells);
                 }
             }
         }
 
-        return dataMatrix;
+        return sheetMatrix;
+    }
+
+    public static string[] ColumnHeaders(List<string[]> sheetMatrix)
+    {
+        return sheetMatrix[0];
     }
 }
